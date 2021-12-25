@@ -1,0 +1,120 @@
+1. Interrogando la bases de datos Information_schema, extrae información (atributos table_name, table_type) sobre las tablas que conforman la base de datos "sakila".
+
+mysql> select table_name, table_type from tables where table_schema="sakila";
++----------------------------+------------+
+| TABLE_NAME                 | TABLE_TYPE |
++----------------------------+------------+
+| actor                      | BASE TABLE |
+| actor_info                 | VIEW       |
+| address                    | BASE TABLE |
+| category                   | BASE TABLE |
+| city                       | BASE TABLE |
+| country                    | BASE TABLE |
+| customer                   | BASE TABLE |
+| customer_list              | VIEW       |
+| film                       | BASE TABLE | 
+| film_actor                 | BASE TABLE | 
+| film_category              | BASE TABLE | 
+| film_list                  | VIEW       | 
+| film_text                  | BASE TABLE | 
+| inventory                  | BASE TABLE | 
+| language                   | BASE TABLE | 
+| nicer_but_slower_film_list | VIEW       | 
+| payment                    | BASE TABLE | 
+| rental                     | BASE TABLE | 
+| sales_by_film_category     | VIEW       | 
+| sales_by_store             | VIEW       | 
+| staff                      | BASE TABLE | 
+| staff_list                 | VIEW       | 
+| store                      | BASE TABLE | 
++----------------------------+------------+
+23 rows in set (0.12 sec)
+
+2. ¿Cuál es el comando SHOW equivalente al anterior?
+
+mysql> show full tables from sakila;
++----------------------------+------------+
+| Tables_in_sakila           | Table_type |
++----------------------------+------------+
+| actor                      | BASE TABLE |
+| actor_info                 | VIEW       |
+| address                    | BASE TABLE |
+| category                   | BASE TABLE |
+| city                       | BASE TABLE |
+| country                    | BASE TABLE |
+| customer                   | BASE TABLE |
+| customer_list              | VIEW       |
+| film                       | BASE TABLE |
+| film_actor                 | BASE TABLE |
+| film_category              | BASE TABLE |
+| film_list                  | VIEW       |
+| film_text                  | BASE TABLE |
+| inventory                  | BASE TABLE |
+| language                   | BASE TABLE |
+| nicer_but_slower_film_list | VIEW       |
+| payment                    | BASE TABLE |
+| rental                     | BASE TABLE |
+| sales_by_film_category     | VIEW       |
+| sales_by_store             | VIEW       |
+| staff                      | BASE TABLE |
+| staff_list                 | VIEW       |
+| store                      | BASE TABLE |
++----------------------------+------------+
+23 rows in set (0.01 sec)
+
+
+3. Repite lo mismo extrayendo la información sobre el esquema de una tabla en particular de la base de datos "sakila", 
+por ejemplo, actor (atributos column_name, data_type, column_key, is_nullable, column_default). 
+¿Qué tabla/s tendrás que usar de la BD Information_Schema?
+
+mysql> select * from columns where table_schema="sakila" and table_name="actor";
++---------------+--------------+------------+-------------+------------------+-------------------+-------------+-----------+--------------------------+------------------------+-------------------+---------------+--------------------+--------------------+--------------------+-------------------+------------+-----------------------------------------------+---------------------------------+----------------+-----------------------+--------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | COLUMN_NAME | ORDINAL_POSITION | COLUMN_DEFAULT    | IS_NULLABLE | DATA_TYPE | CHARACTER_MAXIMUM_LENGTH | CHARACTER_OCTET_LENGTH | NUMERIC_PRECISION | NUMERIC_SCALE | DATETIME_PRECISION | CHARACTER_SET_NAME | COLLATION_NAME     | COLUMN_TYPE       | COLUMN_KEY | EXTRA                                         | PRIVILEGES                      | COLUMN_COMMENT | GENERATION_EXPRESSION | SRS_ID |
++---------------+--------------+------------+-------------+------------------+-------------------+-------------+-----------+--------------------------+------------------------+-------------------+---------------+--------------------+--------------------+--------------------+-------------------+------------+-----------------------------------------------+---------------------------------+----------------+-----------------------+--------+
+| def           | sakila       | actor      | actor_id    |                1 | NULL              | NO          | smallint  |                     NULL |                   NULL |                 5 |             0 |               NULL | NULL               | NULL               | smallint unsigned | PRI        | auto_increment                                | select,insert,update,references |                |                       |   NULL |
+| def           | sakila       | actor      | first_name  |                2 | NULL              | NO          | varchar   |                       45 |                    180 |              NULL |          NULL |               NULL | utf8mb4            | utf8mb4_0900_ai_ci | varchar(45)       |            |                                               | select,insert,update,references |                |                       |   NULL |
+| def           | sakila       | actor      | last_name   |                3 | NULL              | NO          | varchar   |                       45 |                    180 |              NULL |          NULL |               NULL | utf8mb4            | utf8mb4_0900_ai_ci | varchar(45)       | MUL        |                                               | select,insert,update,references |                |                       |   NULL |
+| def           | sakila       | actor      | last_update |                4 | CURRENT_TIMESTAMP | NO          | timestamp |                     NULL |                   NULL |              NULL |          NULL |                  0 | NULL               | NULL               | timestamp         |            | DEFAULT_GENERATED on update CURRENT_TIMESTAMP | select,insert,update,references |                |                       |   NULL |
++---------------+--------------+------------+-------------+------------------+-------------------+-------------+-----------+--------------------------+------------------------+-------------------+---------------+--------------------+--------------------+--------------------+-------------------+------------+-----------------------------------------------+---------------------------------+----------------+-----------------------+--------+
+4 rows in set (0.00 sec)
+
+
+4. ¿Cuál es el comando SHOW equivalente al anterior?
+
+mysql> show columns from actor from sakila;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| actor_id    | smallint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| first_name  | varchar(45)       | NO   |     | NULL              |                                               |
+| last_name   | varchar(45)       | NO   | MUL | NULL              |                                               |
+| last_update | timestamp         | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+4 rows in set (0.00 sec)
+
+mysql> show full columns from actor from sakila;
++-------------+-------------------+--------------------+------+-----+-------------------+-----------------------------------------------+---------------------------------+---------+
+| Field       | Type              | Collation          | Null | Key | Default           | Extra                                         | Privileges                      | Comment |
++-------------+-------------------+--------------------+------+-----+-------------------+-----------------------------------------------+---------------------------------+---------+
+| actor_id    | smallint unsigned | NULL               | NO   | PRI | NULL              | auto_increment                                | select,insert,update,references |         |
+| first_name  | varchar(45)       | utf8mb4_0900_ai_ci | NO   |     | NULL              |                                               | select,insert,update,references |         |
+| last_name   | varchar(45)       | utf8mb4_0900_ai_ci | NO   | MUL | NULL              |                                               | select,insert,update,references |         |
+| last_update | timestamp         | NULL               | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP | select,insert,update,references |         |
++-------------+-------------------+--------------------+------+-----+-------------------+-----------------------------------------------+---------------------------------+---------+
+4 rows in set (0.01 sec)
+
+mysql> show full columns from sakila.actor;
++-------------+-------------------+--------------------+------+-----+-------------------+-----------------------------------------------+---------------------------------+---------+
+| Field       | Type              | Collation          | Null | Key | Default           | Extra                                         | Privileges                      | Comment |
++-------------+-------------------+--------------------+------+-----+-------------------+-----------------------------------------------+---------------------------------+---------+
+| actor_id    | smallint unsigned | NULL               | NO   | PRI | NULL              | auto_increment                                | select,insert,update,references |         |
+| first_name  | varchar(45)       | utf8mb4_0900_ai_ci | NO   |     | NULL              |                                               | select,insert,update,references |         |
+| last_name   | varchar(45)       | utf8mb4_0900_ai_ci | NO   | MUL | NULL              |                                               | select,insert,update,references |         |
+| last_update | timestamp         | NULL               | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP | select,insert,update,references |         |
++-------------+-------------------+--------------------+------+-----+-------------------+-----------------------------------------------+---------------------------------+---------+
+4 rows in set (0.01 sec)
+
+5. Atendiendo a la base de datos "Information_schema", ¿cuáles son las tablas principales según tu criterio?
+
+Las columnas principales de la base de datos information_schema son las que están relacionadas con datos de usuarios, 
+y que, además, son las más sensibles a cambios ya que estás pueden ser alteradas para otorgar permisos sobre las bases de datos o quitarlos.
